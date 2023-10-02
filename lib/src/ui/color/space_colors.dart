@@ -5,6 +5,7 @@ mixin SpaceColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color blue = Color(0xFF1E2D4F);
   static const Color purple = Color(0xFF3F2B4F);
+  //3F2B4F HEX
   static const Color pink = Color(0xFFE03C8A);
   static const Color yellow = Color(0xFFF7D23C);
   static const Color orange = Color(0xFFF7A23C);

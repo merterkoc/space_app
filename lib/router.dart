@@ -13,7 +13,8 @@ enum AppRoute {
 
   final String path;
 
-  String get location => path.isNotEmpty && !path.startsWith('/') ? '/$path' : path;
+  String get location =>
+      path.isNotEmpty && !path.startsWith('/') ? '/$path' : path;
 }
 
 final GoRouter goRouter = GoRouter(

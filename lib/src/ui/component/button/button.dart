@@ -18,10 +18,10 @@ class SpaceButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: SpaceColors.purple,
         shadowColor: SpaceColors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(100),
           side: BorderSide.none,
         ),
         padding: const EdgeInsets.symmetric(
@@ -35,7 +35,8 @@ class SpaceButton extends StatelessWidget {
       },
       child: Text(
         text,
-        style: Theme.of(context).textTheme.labelMedium,
+        style: const TextStyle(color: SpaceColors.white, fontSize: 16),
+        // style: Theme.of(context).textTheme.labelMedium,
       ),
     );
   }
