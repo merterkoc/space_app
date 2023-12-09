@@ -4,10 +4,10 @@ import 'package:space_app/src/service/repository/astronomic_event_repository.dar
 void main() {
   late final AstronomicEventRepository repository;
   setUp(() {
-    repository = AstronomicEventRepository();
+    repository = AstronomicEventRepository(coordinate: '0.0,0.0');
   });
   test('Test get', () async {
-    final events = await repository.fetchAstronomicEvents(page: 1, size: 1);
+    final events = await repository.fetchAstronomicEvents(page: 6, size: 1);
     expect(events.statusCode, 200);
   });
 }

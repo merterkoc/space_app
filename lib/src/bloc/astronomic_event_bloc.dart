@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:space_app/src/handlers/location_handler.dart';
 import 'package:space_app/src/http/dio/model/request_state.dart';
 import 'package:space_app/src/service/model/astronomic_event_dto.dart';
 import 'package:space_app/src/service/repository/astronomic_event_repository.dart';
+import 'package:space_app/src/util/extensions/position_extension.dart';
 
 part 'astronomic_event_event.dart';
 
@@ -16,7 +18,8 @@ class AstronomicEventBloc
   }
 
   final AstronomicEventRepository _astronomicEventRepository =
-      AstronomicEventRepository();
+      AstronomicEventRepository(
+          coordinate: LocationHandler().position!.coordinate);
 
   Future<void> _onFetchAstronomicEvent(
       FetchAstronomicEvent event, Emitter<AstronomicEventState> emit) async {

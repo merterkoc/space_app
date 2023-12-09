@@ -45,6 +45,10 @@ dependencies:
   firebase_messaging: ^14.7.5
   logger: ^2.0.2+1
   firebase_analytics: ^10.7.1
+  geolocator: ^10.1.0
+  permission_handler: ^11.1.0
+  cached_network_image: ^3.3.0
+  infinite_scroll_pagination: ^4.0.0
 
 dev_dependencies:
   flutter_test:

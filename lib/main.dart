@@ -6,6 +6,6 @@ import 'package:space_app/src/ui/space_ui.dart';
 final settingsController = SettingsController(SettingsService());
 
 Future<void> main() async {
-  AppInitializationService.initialize();
+  await AppInitializationService.initialize();
   runApp(const SpaceApp());
 }

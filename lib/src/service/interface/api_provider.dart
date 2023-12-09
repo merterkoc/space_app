@@ -1,12 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:space_app/src/http/dio/dio_client.dart';
 import 'package:space_app/src/http/dio/model/response_entity.dart';
 
 abstract class ApiProvider {
-  final DioClient dio = DioClient();
+  late final DioClient dio = DioClient(interceptor: interceptor);
 
-  ApiProvider(this._path);
+  ApiProvider(this._path, {this.interceptor});
 
   final String _path;
+
+  final Interceptor? interceptor;
 
   Future<ResponseEntity<dynamic>> get([String? path]) async {
     final response = await dio.get<Map<String, dynamic>>('$_path/$path');

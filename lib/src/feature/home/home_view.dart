@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:space_app/src/base_scaffold.dart';
 import 'package:space_app/src/bloc/astronomic_event_bloc.dart';
 import 'package:space_app/src/feature/home/component/home_app_bar.dart';
 import 'package:space_app/src/feature/home/component/planet_card.dart';
-import 'package:space_app/src/http/dio/model/request_state.dart';
+import 'package:space_app/src/service/model/astronomic_event_dto.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
 class HomeView extends StatefulWidget {
@@ -17,9 +17,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    context
-        .read<AstronomicEventBloc>()
-        .add(FetchAstronomicEvent(page: 1, size: 10));
     super.initState();
   }
 
@@ -51,55 +48,9 @@ class _HomeViewState extends State<HomeView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 300,
-                child: BlocBuilder<AstronomicEventBloc, AstronomicEventState>(
-                  buildWhen: (previous, current) =>
-                      previous.events != current.events ||
-                      previous.astronomicEventListRequestState !=
-                          current.astronomicEventListRequestState,
-                  builder: (context, state) {
-                    switch (state.astronomicEventListRequestState) {
-                      case RequestState.initialized:
-                      case RequestState.loading:
-                        return Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          enabled: true,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return const PlanetCard(
-                                imageUri: null,
-                              );
-                            },
-                          ),
-                        );
-                      case RequestState.success:
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.events.length,
-                          itemBuilder: (context, index) {
-                            if (index < state.events.length) {
-                              return PlanetCard(
-                                imageUri: state.events[index].image?.first,
-                                name: state.events[index].name ?? '',
-                                description:
-                                    state.events[index].description ?? '',
-                              );
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        );
-                      case RequestState.notInitialized:
-                      case RequestState.error:
-                        return const Center(
-                          child: Text('Bir sorun oluştu lütfen tekrar deneyin'),
-                        );
-                    }
-                  },
-                ),
+                child: PaginationListView(),
               ),
               SizedBox(
                 height: 200,
@@ -147,5 +98,79 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+  }
+}
+
+class PaginationListView extends StatefulWidget {
+  const PaginationListView({super.key});
+
+  @override
+  State<PaginationListView> createState() => _PaginationListViewState();
+}
+
+class _PaginationListViewState extends State<PaginationListView> {
+  static const _pageSize = 4;
+  int currentPage = 2;
+
+  final PagingController<int, AstronomicEventDTO> _pagingController =
+      PagingController(firstPageKey: 2);
+
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener(
+      (pageKey) {
+        context.read<AstronomicEventBloc>().add(
+              FetchAstronomicEvent(
+                page: pageKey,
+                size: _pageSize,
+              ),
+            );
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      // Don't worry about displaying progress or error indicators on screen; the
+      // package takes care of that. If you want to customize them, use the
+      // [PagedChildBuilderDelegate] properties.
+      BlocListener<AstronomicEventBloc, AstronomicEventState>(
+        listenWhen: (previous, current) =>
+            previous.astronomicEventListRequestState !=
+            current.astronomicEventListRequestState,
+        listener: (context, state) {
+          if (state.astronomicEventListRequestState.isSuccess) {
+            currentPage = currentPage + 1;
+            final isLastPage = state.events.length < _pageSize;
+            if (isLastPage) {
+              _pagingController.appendLastPage(state.events);
+            } else {
+              final nextPageKey = currentPage;
+              _pagingController.appendPage(state.events, nextPageKey);
+            }
+          } else if (state.astronomicEventListRequestState.isError) {
+            _pagingController.error = state.astronomicEventListRequestState;
+          } else if (state.astronomicEventListRequestState.isLoading) {
+            //_pagingController.refresh();
+          }
+        },
+        child: PagedListView<int, AstronomicEventDTO>(
+          scrollDirection: Axis.horizontal,
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<AstronomicEventDTO>(
+            itemBuilder: (context, item, index) => PlanetCard(
+              imageUri: item.image?.first,
+              name: item.name,
+              description: item.description,
+            ),
+          ),
+        ),
+      );
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:space_app/main.dart';
 import 'package:space_app/src/firebase/notification.dart';
+import 'package:space_app/src/handlers/location_handler.dart';
 
 class AppInitializationService {
   static Future<void> initialize() async {
@@ -11,6 +12,7 @@ class AppInitializationService {
     await settingsController.loadSettings();
     await Firebase.initializeApp();
     NotificationService().init();
+    await LocationHandler().initialize();
   }
 
   AppInitializationService._();

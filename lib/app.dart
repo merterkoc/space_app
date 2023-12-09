@@ -20,6 +20,10 @@ class SpaceApp extends StatelessWidget {
         listenable: settingsController,
         builder: (BuildContext context, Widget? child) {
           return MaterialApp.router(
+            backButtonDispatcher: goRouter.backButtonDispatcher,
+            routeInformationProvider: goRouter.routeInformationProvider,
+            routeInformationParser: goRouter.routeInformationParser,
+            routerDelegate: goRouter.routerDelegate,
             theme: ThemeData.light(useMaterial3: true).copyWith(
               colorScheme: CustomColorScheme.light(),
               textTheme: SpaceTextTheme().lightTextTheme,
@@ -30,7 +34,6 @@ class SpaceApp extends StatelessWidget {
             ),
             themeMode: settingsController.themeMode,
             title: 'Space',
-            routerConfig: goRouter,
           );
         },
       ),

@@ -1,15 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:space_app/src/http/const/http_const.dart';
 import 'package:space_app/src/http/dio/http_handler/default_http_handler.dart';
 import 'package:space_app/src/http/dio/interface/i_dio_client.dart';
 
 class DioClient extends IDioClient {
-  factory DioClient() => _instance;
+  static DioClient? _instance;
+  final Interceptor? interceptor;
 
-  DioClient._()
+  factory DioClient({Interceptor? interceptor}) {
+    _instance ??= DioClient._internal(interceptor: interceptor);
+    return _instance!;
+  }
+
+  DioClient._internal({this.interceptor})
       : super(
-            url: HttpConst.baseUrl,
-            interceptor: DefaultHttpHeaderInterceptor());
-
-  // Singleton instance
-  static final DioClient _instance = DioClient._();
+    url: HttpConst.baseUrl,
+    interceptor: interceptor ?? DefaultHttpHeaderInterceptor(),
+  );
 }
