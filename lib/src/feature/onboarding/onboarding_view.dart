@@ -20,13 +20,12 @@ class OnBoardingView extends StatelessWidget {
         ),
         child: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
                 SpaceColors.transparent,
-                Theme.of(context).colorScheme.secondary,
               ],
             ),
           ),
@@ -36,26 +35,18 @@ class OnBoardingView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Spacer(),
-                Text(
+                const Text(
                   'Space',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(color: SpaceColors.white),
                 ),
                 const SizedBox(height: 16),
-                Text('Explore the universe',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(color: SpaceColors.white)),
+                const Text(
+                  'Explore the universe',
+                ),
                 const SizedBox(height: 16),
-                Text('Learn about the universe and the planets',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: SpaceColors.white)),
+                const Text(
+                  'Learn about the universe and the planets',
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

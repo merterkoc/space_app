@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
@@ -11,31 +12,31 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset(navigationShell.currentIndex == 0
-                ? SpaceIcon.space.filledIcon
-                : SpaceIcon.space),
-            label: 'Event ',
+    return CupertinoPageScaffold(
+      child: Column(
+        children: [
+          Expanded(
+            child: navigationShell,
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(navigationShell.currentIndex == 1
-                ? SpaceIcon.event.filledIcon
-                : SpaceIcon.event),
-            label: 'Space',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(navigationShell.currentIndex == 2
-                ? SpaceIcon.news.filledIcon
-                : SpaceIcon.news),
-            label: 'News',
+          CupertinoTabBar(
+            onTap: (index) => _onTap(context, index),
+            currentIndex: navigationShell.currentIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.person),
+                label: 'Profile',
+              ),
+            ],
           ),
         ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: (int index) => _onTap(context, index),
       ),
     );
   }

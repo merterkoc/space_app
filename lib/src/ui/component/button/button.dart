@@ -16,19 +16,7 @@ class SpaceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: SpaceColors.purple,
-        shadowColor: SpaceColors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-          side: BorderSide.none,
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 24,
-        ),
-      ),
+    return CupertinoButton(
       onPressed: () {
         if (isDisabled == true) return;
         onPressed();

@@ -1,4 +1,6 @@
-class AstronomicEventDTO {
+import 'package:equatable/equatable.dart';
+
+class AstronomicEventDTO extends Equatable {
   String? sId;
   List<String>? notification;
   String? name;
@@ -19,7 +21,7 @@ class AstronomicEventDTO {
       this.image});
 
   AstronomicEventDTO.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['id'];
     if (json['notification'] != null) {
       notification = List.empty(growable: true);
       json['notification'].forEach((v) {
@@ -52,6 +54,18 @@ class AstronomicEventDTO {
     data['image'] = this.image;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        sId,
+        notification,
+        name,
+        description,
+        startDate,
+        endDate,
+        coordinate,
+        image,
+      ];
 }
 
 class Coordinate {

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:space_app/src/handlers/location_handler.dart';
 import 'package:space_app/src/http/dio/model/request_state.dart';
@@ -12,9 +13,13 @@ part 'astronomic_event_state.dart';
 
 class AstronomicEventBloc
     extends Bloc<AstronomicEventEvent, AstronomicEventState> {
-  AstronomicEventBloc() : super(AstronomicEventState.initial()) {
+  AstronomicEventBloc() : super(const AstronomicEventState()) {
     on<FetchAstronomicEvent>(
         (event, emit) => _onFetchAstronomicEvent(event, emit));
+    on<FetchEventCategories>(
+        (event, emit) => _onFetchEventCategories(event, emit));
+    on<SelectEventCategory>(
+        (event, emit) => _onSelectEventCategory(event, emit));
   }
 
   final AstronomicEventRepository _astronomicEventRepository =
@@ -34,6 +39,7 @@ class AstronomicEventBloc
             .toList();
         emit(
           state.copyWith(
+            eventCache: [...state.eventCache, ...data],
             events: data,
             astronomicEventListRequestState: RequestState.success,
           ),
@@ -42,5 +48,26 @@ class AstronomicEventBloc
     } else {
       emit(state.copyWith(astronomicEventListRequestState: RequestState.error));
     }
+  }
+
+  Future<void> _onFetchEventCategories(
+      FetchEventCategories event, Emitter<AstronomicEventState> emit) async {
+    await _astronomicEventRepository.fetchEventCategories().then(
+      (categories) {
+        if (categories.isOk) {
+          final data = (categories.data!['data']['categories'] as List<dynamic>)
+              .map((e) => e as String)
+              .toList();
+          emit(state.copyWith(
+            eventCategories: data,
+          ));
+        }
+      },
+    );
+  }
+
+  void _onSelectEventCategory(
+      SelectEventCategory event, Emitter<AstronomicEventState> emit) {
+    emit(state.copyWith(selectedCategoryIndex: event.categoryIndex));
   }
 }

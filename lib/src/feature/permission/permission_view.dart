@@ -18,7 +18,7 @@ class PermissionView extends StatelessWidget {
 
               ),
               const SizedBox(height: 16),
-              TextButton(
+              CupertinoButton(
                 onPressed: () {
                   LocationHandler().openLocationSettings();
                 },

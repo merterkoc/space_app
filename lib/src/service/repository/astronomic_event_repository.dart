@@ -17,4 +17,9 @@ class AstronomicEventRepository {
     final response = await _provider.getPageable(page, size);
     return response;
   }
+
+  Future<ResponseEntity> fetchEventCategories() async {
+    final response = await _provider.getEventCategories();
+    return response;
+  }
 }
