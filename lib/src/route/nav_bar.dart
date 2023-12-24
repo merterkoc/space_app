@@ -27,8 +27,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.search),
-                label: 'Search',
+                icon: Icon(CupertinoIcons.settings),
+                label: 'Settings',
               ),
               BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.person),

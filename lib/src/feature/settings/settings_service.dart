@@ -1,5 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:space_app/src/cache/shared_preferences.dart';
 
 /// A service that stores and retrieves user settings.
 ///
@@ -9,15 +9,19 @@ import 'package:flutter/cupertino.dart';
 class SettingsService {
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<Brightness> themeMode() async {
-    // Use the shared_preferences package to load the user's preferred
-    // ThemeMode from local storage. If no setting has been stored, return
-
-    return Brightness.light;
+    final theme = await Shared().getInt('theme');
+    if (theme == null || theme.isNegative || theme > Brightness.values.length) {
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    }
+    return Brightness.values[theme];
   }
 
   /// Persists the user's preferred ThemeMode to local or remote storage.
   Future<void> updateThemeMode(Brightness theme) async {
-    // Use the shared_preferences package to persist settings locally or the
-    // http package to persist settings over the network.
+    Shared().setInt('theme', theme.index);
+  }
+
+  void updateDefaultThemeMode() {
+    Shared().remove('theme');
   }
 }

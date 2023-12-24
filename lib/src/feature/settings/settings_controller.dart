@@ -47,4 +47,15 @@ class SettingsController with ChangeNotifier {
     // SettingService.
     await _settingsService.updateThemeMode(newThemeMode);
   }
+
+  Future<void> setDefaultThemeMode() async {
+    _themeMode = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    notifyListeners();
+    _settingsService.updateDefaultThemeMode();
+  }
+
+  Future<void> listenToThemeMode() async {
+    _themeMode = await _settingsService.themeMode();
+    notifyListeners();
+  }
 }

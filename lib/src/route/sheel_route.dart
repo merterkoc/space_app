@@ -21,6 +21,13 @@ class _ShellViewState extends State<ShellView>
   @override
   bool get wantKeepAlive => true;
 
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+debugPrint('didChangePlatformBrightness');
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recase/recase.dart';
+import 'package:space_app/main.dart';
 import 'package:space_app/src/bloc/astronomic_event_bloc.dart';
 import 'package:space_app/src/feature/home/component/event_list_view.dart';
 import 'package:space_app/src/feature/home/component/event_list_view_by_category.dart';
@@ -16,11 +17,24 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   @override
   void initState() {
     context.read<AstronomicEventBloc>().add(FetchEventCategories());
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    settingsController.listenToThemeMode();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

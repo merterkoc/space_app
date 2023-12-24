@@ -98,6 +98,7 @@ final GoRouter goRouter = GoRouter(
           routes: <RouteBase>[
             GoRoute(
               path: AppRoute.settingsView.path,
+              name: AppRoute.settingsView.name,
               pageBuilder: (BuildContext context, GoRouterState state) =>
                   CupertinoPage<void>(
                 key: state.pageKey,

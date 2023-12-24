@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:space_app/main.dart';
+import 'package:space_app/src/common/modal/action_sheet.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -13,6 +15,9 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Settings'),
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -20,15 +25,64 @@ class SettingsView extends StatelessWidget {
           //
           // When a user selects a theme from the dropdown list, the
           // SettingsController is updated, which rebuilds the MaterialApp.
-          child: CupertinoPicker(
-            itemExtent: 32,
-
-            onSelectedItemChanged: (int index) {
-              settingsController.updateThemeMode(Brightness.values[index]);
-            },
-            children: const [
-              Text('Dark'),
-              Text('Light'),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Theme'),
+                  CupertinoButton(
+                    onPressed: () {
+                      CupertinoAction.show(context,
+                          cancelButton: CupertinoActionSheetAction(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          actions: [
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                settingsController
+                                    .updateThemeMode(Brightness.light);
+                                context.pop();
+                              },
+                              child: const Text('Light'),
+                            ),
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                settingsController
+                                    .updateThemeMode(Brightness.dark);
+                                context.pop();
+                              },
+                              child: const Text('Dark'),
+                            ),
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                settingsController
+                                    .setDefaultThemeMode();
+                                context.pop();
+                              },
+                              child: const Text('System'),
+                            ),
+                          ],
+                          title: const Text('Select Theme'));
+                    },
+                    child: const Text('Change '),
+                  ),
+                ],
+              )
+              // CupertinoPicker(
+              //   itemExtent: 32,
+              //
+              //   onSelectedItemChanged: (int index) {
+              //     settingsController.updateThemeMode(Brightness.values[index]);
+              //   },
+              //   children: const [
+              //     Text('Dark'),
+              //     Text('Light'),
+              //   ],
+              // ),
             ],
           ),
         ),
