@@ -6,7 +6,7 @@ final ScrollController scrollController = ScrollController();
 class SmallButtonItemList extends StatelessWidget {
   const SmallButtonItemList({super.key, required this.smallButtonItems});
 
-  final List<SmallButtonItems> smallButtonItems;
+  final List<SmallButtonItem> smallButtonItems;
 
   @override
   Widget build(BuildContext context) {

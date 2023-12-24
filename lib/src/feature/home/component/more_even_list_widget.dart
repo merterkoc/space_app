@@ -7,19 +7,19 @@ import 'package:space_app/src/feature/home/component/planet_card.dart';
 import 'package:space_app/src/service/model/astronomic_event_dto.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
-class PaginationListView extends StatefulWidget {
-  const PaginationListView({super.key});
+class PaginationListViewMore extends StatefulWidget {
+  const PaginationListViewMore({super.key});
 
   @override
-  State<PaginationListView> createState() => _PaginationListViewState();
+  State<PaginationListViewMore> createState() => _PaginationListViewMoreState();
 }
 
-class _PaginationListViewState extends State<PaginationListView> {
+class _PaginationListViewMoreState extends State<PaginationListViewMore> {
   static const _pageSize = 4;
-  int currentPage = 2;
+  int currentPage = 1;
 
   final PagingController<int, AstronomicEventDTO> _pagingController =
-      PagingController(firstPageKey: 2);
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -59,9 +59,7 @@ class _PaginationListViewState extends State<PaginationListView> {
           }
         },
         child: PagedListView<int, AstronomicEventDTO>(
-          scrollDirection: Axis.horizontal,
           pagingController: _pagingController,
-          itemExtent: 200,
           padding: const EdgeInsets.symmetric(horizontal: 8),
           builderDelegate: PagedChildBuilderDelegate<AstronomicEventDTO>(
             firstPageProgressIndicatorBuilder: (context) =>
@@ -77,7 +75,7 @@ class _PaginationListViewState extends State<PaginationListView> {
                 PageIndicatorNotFound(onRetry: _pagingController.refresh),
             itemBuilder: (context, item, index) => PlanetCard(
               event: item,
-              imageHeroTag: 'event_list${item.sId}',
+              imageHeroTag: 'more_event_list${item.sId}',
             ),
           ),
         ),

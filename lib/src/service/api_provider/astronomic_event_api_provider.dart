@@ -15,4 +15,9 @@ class AstronomicEventApiProvider extends ApiProvider {
   Future<ResponseEntity> getEventCategories() {
     return get('/categories');
   }
+
+  Future<ResponseEntity> getAstronomicEventsByCategory(
+      {required int page, required int size, required String category}) {
+    return get('?page=$page&size=$size&category=$category');
+  }
 }

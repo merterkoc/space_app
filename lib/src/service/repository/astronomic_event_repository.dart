@@ -22,4 +22,13 @@ class AstronomicEventRepository {
     final response = await _provider.getEventCategories();
     return response;
   }
+
+  Future<ResponseEntity> fetchAstronomicEventsByCategory({
+    required int page,
+    required int size,
+    required String category,
+  }) {
+    return _provider.getAstronomicEventsByCategory(
+        page: page, size: size, category: category);
+  }
 }

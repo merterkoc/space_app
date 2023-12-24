@@ -22,3 +22,15 @@ class SelectEventCategory extends AstronomicEventEvent {
 
   const SelectEventCategory({required this.categoryIndex});
 }
+
+class FetchAstronomicEventByCategory extends AstronomicEventEvent {
+  final String? category;
+  final int page;
+  final int size;
+
+  const FetchAstronomicEventByCategory({
+    required this.category,
+    required this.page,
+    required this.size,
+  });
+}

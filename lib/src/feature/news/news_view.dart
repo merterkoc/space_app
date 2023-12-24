@@ -6,7 +6,11 @@ class NewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      child: Text('NewsView'),
+      child: SafeArea(
+        child: Center(
+          child: Text('NewsView'),
+        ),
+      ),
     );
   }
 }

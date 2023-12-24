@@ -7,9 +7,11 @@ class PlanetCard extends StatelessWidget {
   const PlanetCard({
     super.key,
     this.event,
+    required this.imageHeroTag,
   });
 
   final AstronomicEventDTO? event;
+  final String imageHeroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,11 @@ class PlanetCard extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             animation.status == AnimationStatus.dismissed
-                ? context.pushNamed(AppRoute.eventDetailsView.name,
-                    pathParameters: {'id': event!.sId!})
+                ? context
+                    .pushNamed(AppRoute.eventDetailsView.name, pathParameters: {
+                    'id': event!.sId!,
+                    'imageHeroTag': imageHeroTag,
+                  })
                 : animation.status == AnimationStatus.completed
                     ? context.pop()
                     : null;
@@ -28,6 +33,7 @@ class PlanetCard extends StatelessWidget {
           child: Card(
             event: event,
             animationStatus: animation.status,
+            imageHeroTag: imageHeroTag,
           ),
         );
       },
@@ -36,8 +42,10 @@ class PlanetCard extends StatelessWidget {
           trailingIcon: Icons.chevron_right_outlined,
           child: const Text('Details'),
           onPressed: () {
-            context.pushNamed(AppRoute.eventDetailsView.name,
-                pathParameters: {'id': event!.sId!});
+            context.pushNamed(AppRoute.eventDetailsView.name, pathParameters: {
+              'id': event!.sId!,
+              'imageHeroTag': imageHeroTag
+            });
           },
         ),
         CupertinoContextMenuAction(
@@ -58,10 +66,12 @@ class Card extends StatelessWidget {
     super.key,
     required this.event,
     required this.animationStatus,
+    required this.imageHeroTag,
   });
 
   final AstronomicEventDTO? event;
   final AnimationStatus animationStatus;
+  final String imageHeroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +83,13 @@ class Card extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Hero(
-        tag: event!.sId!,
+        tag: imageHeroTag,
         child: Wrap(
           runSpacing: 8,
           spacing: 8,
           verticalDirection: VerticalDirection.down,
           crossAxisAlignment: WrapCrossAlignment.end,
           children: <Widget>[
-            if (event?.image != null)
               Container(
                 width: double.infinity,
                 height: 150,

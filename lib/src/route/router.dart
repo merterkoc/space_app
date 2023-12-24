@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:space_app/src/feature/home/event/event_detail_view.dart';
 import 'package:space_app/src/feature/home/home_view.dart';
+import 'package:space_app/src/feature/home/more_event/more_event_view.dart';
 import 'package:space_app/src/feature/news/news_view.dart';
 import 'package:space_app/src/feature/permission/permission_view.dart';
 import 'package:space_app/src/feature/settings/settings_view.dart';
@@ -22,7 +23,8 @@ enum AppRoute {
   newsView(path: '/newsView'),
   settingsView(path: '/settingsView'),
   onBoardingView(path: '/onBoardingView'),
-  eventDetailsView(path: 'eventDetailsView/:id');
+  eventDetailsView(path: "eventDetailsView/:id/:imageHeroTag"),
+  moreEventsView(path: 'moreEventsView');
 
   const AppRoute({required this.path});
 
@@ -69,9 +71,21 @@ final GoRouter goRouter = GoRouter(
                   name: AppRoute.eventDetailsView.name,
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     final id = state.pathParameters['id'];
+                    final imageHeroTag = state.pathParameters['imageHeroTag'];
                     return CupertinoPage<void>(
                       key: state.pageKey,
-                      child: EventDetailView(id: id),
+                      child: EventDetailView(id: id, imageHeroTag: imageHeroTag!),
+                    );
+                  },
+                ),
+
+                GoRoute(
+                  path: AppRoute.moreEventsView.path,
+                  name: AppRoute.moreEventsView.name,
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    return CupertinoPage<void>(
+                      key: state.pageKey,
+                      child: MoreEventView(),
                     );
                   },
                 ),

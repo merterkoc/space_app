@@ -11,6 +11,8 @@ class MyThemeColors {
   final Color smallButtonDisabledColor;
   final Color smallButtonActiveTextColor;
   final Color smallButtonDisabledTextColor;
+  final Color favoriteButtonActiveColor;
+  final Color favoriteButtonDisabledColor;
 
   factory MyThemeColors.fromContext(BuildContext context) {
     return MyThemeColors(
@@ -34,6 +36,15 @@ class MyThemeColors {
             const CupertinoDynamicColor.withBrightness(
               color: SpaceColors.white,
               darkColor: SpaceColors.white,
+        ).resolveFrom(context),
+        favoriteButtonActiveColor: const CupertinoDynamicColor.withBrightness(
+          color: SpaceColors.white,
+          darkColor: SpaceColors.white,
+        ).resolveFrom(context),
+        favoriteButtonDisabledColor:
+            const CupertinoDynamicColor.withBrightness(
+          color: SpaceColors.white,
+          darkColor: SpaceColors.white,
         ).resolveFrom(context));
   }
 
@@ -43,5 +54,7 @@ class MyThemeColors {
     required this.smallButtonActiveTextColor,
     required this.smallButtonDisabledColor,
     required this.smallButtonDisabledTextColor,
+    required this.favoriteButtonActiveColor,
+    required this.favoriteButtonDisabledColor,
   });
 }

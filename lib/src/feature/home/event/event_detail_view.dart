@@ -5,10 +5,11 @@ import 'package:space_app/src/ui/space_ui.dart';
 
 class EventDetailView extends StatefulWidget {
   final String? id;
+  final String imageHeroTag;
 
   const EventDetailView({
     super.key,
-    required this.id,
+    required this.id, required this.imageHeroTag,
   });
 
   @override
@@ -45,7 +46,7 @@ class _EventDetailViewState extends State<EventDetailView> {
                     child: Container(
                       padding: PaddingConst.mediumPadding,
                       child: Hero(
-                        tag: event!.sId!,
+                        tag: widget.imageHeroTag,
                         child: Container(
                           height: 200,
                           decoration: BoxDecoration(

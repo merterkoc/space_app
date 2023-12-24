@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recase/recase.dart';
 import 'package:space_app/src/bloc/astronomic_event_bloc.dart';
 import 'package:space_app/src/feature/home/component/event_list_view.dart';
+import 'package:space_app/src/feature/home/component/event_list_view_by_category.dart';
 import 'package:space_app/src/ui/component/button/small_button.dart';
+import 'package:space_app/src/ui/space_ui.dart';
 import 'package:space_app/src/ui/widgets/small_button_list.dart';
 import 'package:space_app/src/util/date_util/date_time.dart';
 
@@ -63,11 +65,11 @@ class _HomeViewState extends State<HomeView> {
                       if (state.eventCategories.isEmpty) {
                         return const SizedBox(height: 70);
                       }
-                      final List<SmallButtonItems> smallButtonItems =
+                      final List<SmallButtonItem> smallButtonItems =
                           state.eventCategories.asMap().entries.map((entry) {
                         final int index = entry.key;
                         final String category = entry.value;
-                        return SmallButtonItems(
+                        return SmallButtonItem(
                           isActive: index == state.selectedCategoryIndex,
                           callback: () {
                             context
@@ -83,17 +85,40 @@ class _HomeViewState extends State<HomeView> {
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 18, top: 12, right: 16),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18, top: 2, right: 16),
                   child: Text(
-                    'Daha fazla',
+                    ReCase(context
+                                .watch<AstronomicEventBloc>()
+                                .state
+                                .selectedCategory ??
+                            '')
+                        .titleCase,
                     textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w100,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 250, child: PaginationListView()),
+                const SizedBox(height: 250, child: EventListByCategory()),
+                SizedBox(
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SmallButton(
+                        smallButtonItems: SmallButtonItem(
+                            icon: CupertinoIcons.right_chevron,
+                            isActive: false,
+                            callback: () {
+                              context.goNamed(AppRoute.moreEventsView.name);
+                            },
+                            text: 'More events'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

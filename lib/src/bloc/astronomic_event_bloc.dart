@@ -20,6 +20,8 @@ class AstronomicEventBloc
         (event, emit) => _onFetchEventCategories(event, emit));
     on<SelectEventCategory>(
         (event, emit) => _onSelectEventCategory(event, emit));
+    on<FetchAstronomicEventByCategory>(
+        (event, emit) => _onFetchAstronomicEventByCategory(event, emit));
   }
 
   final AstronomicEventRepository _astronomicEventRepository =
@@ -69,5 +71,35 @@ class AstronomicEventBloc
   void _onSelectEventCategory(
       SelectEventCategory event, Emitter<AstronomicEventState> emit) {
     emit(state.copyWith(selectedCategoryIndex: event.categoryIndex));
+  }
+
+  Future<void> _onFetchAstronomicEventByCategory(
+      FetchAstronomicEventByCategory event,
+      Emitter<AstronomicEventState> emit) async {
+    if(event.category == null) return;
+    emit(state.copyWith(eventListByCategoryRequestState: RequestState.loading));
+    final response =
+        await _astronomicEventRepository.fetchAstronomicEventsByCategory(
+      page: event.page,
+      size: event.size,
+      category: event.category!,
+    );
+    if (response.isOk) {
+      List<AstronomicEventDTO>? data;
+      if (response.data != null) {
+        data = (response.data!['data'] as List<dynamic>)
+            .map((e) => AstronomicEventDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+        emit(
+          state.copyWith(
+            eventCache: [...state.eventCache, ...data],
+            eventsByCategory: data,
+            eventListByCategoryRequestState: RequestState.success,
+          ),
+        );
+      }
+    } else {
+      emit(state.copyWith(eventListByCategoryRequestState: RequestState.error));
+    }
   }
 }
