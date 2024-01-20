@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:space_app/main.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -21,17 +21,32 @@ class ScaffoldWithNavBar extends StatelessWidget {
           CupertinoTabBar(
             onTap: (index) => _onTap(context, index),
             currentIndex: navigationShell.currentIndex,
-            items: const [
+            activeColor: settingsController.themeMode == Brightness.dark
+                ? SpaceColors.white
+                : SpaceColors.darkBlue,
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.home),
+                icon: navigationShell.currentIndex == 0
+                    ? const Icon(CupertinoIcons.house_fill)
+                    : const Icon(CupertinoIcons.home),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.settings),
+                icon: navigationShell.currentIndex == 1
+                    ? const Icon(CupertinoIcons.rocket_fill)
+                    : const Icon(CupertinoIcons.rocket),
+                label: 'Iss',
+              ),
+              BottomNavigationBarItem(
+                icon: navigationShell.currentIndex == 2
+                    ? const Icon(CupertinoIcons.gear_alt_fill)
+                    : const Icon(CupertinoIcons.gear),
                 label: 'Settings',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person),
+                icon: navigationShell.currentIndex == 3
+                    ? const Icon(CupertinoIcons.person_fill)
+                    : const Icon(CupertinoIcons.person),
                 label: 'Profile',
               ),
             ],

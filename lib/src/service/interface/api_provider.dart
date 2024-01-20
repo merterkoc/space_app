@@ -12,6 +12,7 @@ abstract class ApiProvider {
   final Interceptor? interceptor;
 
   Future<ResponseEntity<dynamic>> get([String? path]) async {
+    path ??= '';
     final response = await dio.get<Map<String, dynamic>>('$_path/$path');
     return response;
   }

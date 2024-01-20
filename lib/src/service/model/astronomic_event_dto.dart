@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
+import 'package:space_app/src/service/model/coordinate_dto.dart';
 
 class AstronomicEventDTO extends Equatable {
-  String? sId;
-  List<String>? notification;
-  String? name;
-  String? description;
-  String? startDate;
-  String? endDate;
-  Coordinate? coordinate;
-  List<String>? image;
+  final String? sId;
+  final List<String>? notification;
+  final String? name;
+  final String? description;
+  final String? startDate;
+  final String? endDate;
+  final CoordinateDTO? coordinate;
+  final List<String>? image;
 
-  AstronomicEventDTO(
+  const AstronomicEventDTO(
       {this.sId,
       this.notification,
       this.name,
@@ -20,38 +21,38 @@ class AstronomicEventDTO extends Equatable {
       this.coordinate,
       this.image});
 
-  AstronomicEventDTO.fromJson(Map<String, dynamic> json) {
-    sId = json['id'];
-    if (json['notification'] != null) {
-      notification = List.empty(growable: true);
-      json['notification'].forEach((v) {
-        notification!.add(v);
-      });
-    }
-    name = json['name'];
-    description = json['description'];
-    startDate = json['start_date'];
-    endDate = json['end_date'];
-    coordinate = json['coordinate'] != null
-        ? Coordinate.fromJson(json['coordinate'])
-        : null;
-    image = json['image'] != null ? List<String>.from(json['image']) : null;
-  }
+  factory AstronomicEventDTO.fromJson(Map<String, dynamic> json) =>
+      AstronomicEventDTO(
+        sId: json['_id'] as String?,
+        notification: (json['notification'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
+        name: json['name'] as String?,
+        description: json['description'] as String?,
+        startDate: json['start_date'] as String?,
+        endDate: json['end_date'] as String?,
+        coordinate: json['coordinate'] == null
+            ? null
+            : CoordinateDTO.fromJson(
+                json['coordinate'] as Map<String, dynamic>),
+        image:
+            (json['image'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      );
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.notification != null) {
-      data['notification'] = this.notification!.map((v) => v).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (notification != null) {
+      data['notification'] = notification!.map((v) => v).toList();
     }
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    if (this.coordinate != null) {
-      data['coordinate'] = this.coordinate!.toJson();
+    data['name'] = name;
+    data['description'] = description;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    if (coordinate != null) {
+      data['coordinate'] = coordinate!.toJson();
     }
-    data['image'] = this.image;
+    data['image'] = image;
     return data;
   }
 
@@ -66,23 +67,4 @@ class AstronomicEventDTO extends Equatable {
         coordinate,
         image,
       ];
-}
-
-class Coordinate {
-  double? latitude;
-  double? longitude;
-
-  Coordinate({this.latitude, this.longitude});
-
-  Coordinate.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    return data;
-  }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:space_app/src/feature/home/event/event_detail_view.dart';
 import 'package:space_app/src/feature/home/home_view.dart';
 import 'package:space_app/src/feature/home/more_event/more_event_view.dart';
+import 'package:space_app/src/feature/iss/bloc/iss_bloc.dart';
+import 'package:space_app/src/feature/iss/iss_view.dart';
 import 'package:space_app/src/feature/news/news_view.dart';
 import 'package:space_app/src/feature/permission/permission_view.dart';
 import 'package:space_app/src/feature/settings/settings_view.dart';
@@ -23,6 +26,7 @@ enum AppRoute {
   newsView(path: '/newsView'),
   settingsView(path: '/settingsView'),
   onBoardingView(path: '/onBoardingView'),
+  issView(path: '/issView'),
   eventDetailsView(path: "eventDetailsView/:id/:imageHeroTag"),
   moreEventsView(path: 'moreEventsView');
 
@@ -74,22 +78,40 @@ final GoRouter goRouter = GoRouter(
                     final imageHeroTag = state.pathParameters['imageHeroTag'];
                     return CupertinoPage<void>(
                       key: state.pageKey,
-                      child: EventDetailView(id: id, imageHeroTag: imageHeroTag!),
+                      child:
+                          EventDetailView(id: id, imageHeroTag: imageHeroTag!),
                     );
                   },
                 ),
-
                 GoRoute(
                   path: AppRoute.moreEventsView.path,
                   name: AppRoute.moreEventsView.name,
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     return CupertinoPage<void>(
                       key: state.pageKey,
-                      child: MoreEventView(),
+                      child: const MoreEventView(),
                     );
                   },
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              path: AppRoute.issView.path,
+              name: AppRoute.issView.name,
+              pageBuilder: (BuildContext context, GoRouterState state) =>
+                  CupertinoPage<void>(
+                key: state.pageKey,
+                maintainState: false,
+                child: BlocProvider(
+                  create: (context) => IssBloc()..add(const FetchIssInfo()),
+                  child: const IssView(),
+                ),
+              ),
+              routes: const <RouteBase>[],
             ),
           ],
         ),
