@@ -26,8 +26,9 @@ class IssBloc extends Bloc<IssEvent, IssState> {
 
   Future<void> _onFetchIssInfo(
       FetchIssInfo event, Emitter<IssState> emit) async {
+    _fetchIssInfo();
     _timer = Timer.periodic(
-      const Duration(seconds: 5),
+      const Duration(minutes: 1),
       (timer) async {
         try {
           _fetchIssInfo();
@@ -43,8 +44,11 @@ class IssBloc extends Bloc<IssEvent, IssState> {
       if (result.isOk) {
         emit(
           state.copyWith(
-            issCoordinate:
-                CoordinateDTO.fromJson(result.data!['data']['coordinate']),
+            issCoordinateList: result.data!['data']
+                .map<ISSPositionEntity>((coordinate) => ISSPositionEntity(
+                    latitude: double.parse(coordinate['iss_position']['latitude']),
+                    longitude: double.parse(coordinate['iss_position']['longitude'])))
+                .toList(),
           ),
         );
       }

@@ -1,19 +1,19 @@
 part of 'iss_bloc.dart';
 
 class IssState extends Equatable {
-  final CoordinateDTO issCoordinate;
+  final List<ISSPositionEntity> issCoordinateList;
 
-  const IssState({required this.issCoordinate});
+  const IssState({required this.issCoordinateList});
 
   factory IssState.initial() =>
-      IssState(issCoordinate: CoordinateDTO(latitude: 0, longitude: 0));
+      const IssState(issCoordinateList: <ISSPositionEntity>[]);
 
-  IssState copyWith({CoordinateDTO? issCoordinate}) {
+  IssState copyWith({List<ISSPositionEntity>? issCoordinateList}) {
     return IssState(
-      issCoordinate: issCoordinate ?? this.issCoordinate,
+      issCoordinateList: issCoordinateList ?? this.issCoordinateList,
     );
   }
 
   @override
-  List<Object> get props => [issCoordinate];
+  List<Object> get props => [issCoordinateList];
 }

@@ -23,7 +23,7 @@ class PlanetCard extends StatelessWidget {
             animation.status == AnimationStatus.dismissed
                 ? context
                     .pushNamed(AppRoute.eventDetailsView.name, pathParameters: {
-                    'id': event!.sId!,
+                    'id': event!.id!,
                     'imageHeroTag': imageHeroTag,
                   })
                 : animation.status == AnimationStatus.completed
@@ -43,7 +43,7 @@ class PlanetCard extends StatelessWidget {
           child: const Text('Details'),
           onPressed: () {
             context.pushNamed(AppRoute.eventDetailsView.name, pathParameters: {
-              'id': event!.sId!,
+              'id': event!.id!,
               'imageHeroTag': imageHeroTag
             });
           },

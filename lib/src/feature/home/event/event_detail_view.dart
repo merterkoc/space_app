@@ -22,7 +22,7 @@ class _EventDetailViewState extends State<EventDetailView> {
   @override
   void initState() {
     final eventList = context.read<AstronomicEventBloc>().state.eventCache;
-    event = eventList.firstWhere((element) => element.sId == widget.id);
+    event = eventList.firstWhere((element) => element.id == widget.id);
     super.initState();
   }
 

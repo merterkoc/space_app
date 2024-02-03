@@ -77,7 +77,7 @@ class _PaginationListViewState extends State<PaginationListView> {
                 PageIndicatorNotFound(onRetry: _pagingController.refresh),
             itemBuilder: (context, item, index) => PlanetCard(
               event: item,
-              imageHeroTag: 'event_list${item.sId}',
+              imageHeroTag: 'event_list${item.id}',
             ),
           ),
         ),

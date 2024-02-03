@@ -98,7 +98,7 @@ class _EventListByCategoryState extends State<EventListByCategory> {
               noItemsFoundIndicatorBuilder: (context) =>
                   PageIndicatorNotFound(onRetry: _pagingController.refresh),
               itemBuilder: (context, item, index) =>
-                  PlanetCard(event: item, imageHeroTag: 'event_list_by_category${item.sId}'),
+                  PlanetCard(event: item, imageHeroTag: 'event_list_by_category${item.id}'),
                   ),
             ),
           );

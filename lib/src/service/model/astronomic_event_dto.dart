@@ -2,17 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:space_app/src/service/model/coordinate_dto.dart';
 
 class AstronomicEventDTO extends Equatable {
-  final String? sId;
+  final String? id;
   final List<String>? notification;
   final String? name;
   final String? description;
   final String? startDate;
   final String? endDate;
-  final CoordinateDTO? coordinate;
+  final ISSPositionEntity? coordinate;
   final List<String>? image;
 
   const AstronomicEventDTO(
-      {this.sId,
+      {this.id,
       this.notification,
       this.name,
       this.description,
@@ -23,7 +23,7 @@ class AstronomicEventDTO extends Equatable {
 
   factory AstronomicEventDTO.fromJson(Map<String, dynamic> json) =>
       AstronomicEventDTO(
-        sId: json['_id'] as String?,
+        id: json['id'] as String?,
         notification: (json['notification'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList(),
@@ -33,7 +33,7 @@ class AstronomicEventDTO extends Equatable {
         endDate: json['end_date'] as String?,
         coordinate: json['coordinate'] == null
             ? null
-            : CoordinateDTO.fromJson(
+            : ISSPositionEntity.fromJson(
                 json['coordinate'] as Map<String, dynamic>),
         image:
             (json['image'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -41,7 +41,7 @@ class AstronomicEventDTO extends Equatable {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
+    data['id'] = id;
     if (notification != null) {
       data['notification'] = notification!.map((v) => v).toList();
     }
@@ -58,7 +58,7 @@ class AstronomicEventDTO extends Equatable {
 
   @override
   List<Object?> get props => [
-        sId,
+        id,
         notification,
         name,
         description,
