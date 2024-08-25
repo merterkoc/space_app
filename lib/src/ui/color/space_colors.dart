@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 mixin SpaceColors {
@@ -8,4 +9,5 @@ mixin SpaceColors {
   static const Color violet = Color(0xFF5C038C);
   static const Color darkBlue = Color(0xFF1B1734);
   static const Color purple = Color(0xFF896FBC);
+  static const Color systemGrey6 = CupertinoColors.systemGrey6;
 }

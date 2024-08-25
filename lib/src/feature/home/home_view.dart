@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recase/recase.dart';
 import 'package:space_app/main.dart';
 import 'package:space_app/src/bloc/astronomic_event_bloc.dart';
+import 'package:space_app/src/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:space_app/src/bloc/user_bloc/user_bloc.dart';
 import 'package:space_app/src/feature/home/component/event_list_view.dart';
 import 'package:space_app/src/feature/home/component/event_list_view_by_category.dart';
 import 'package:space_app/src/ui/component/button/small_button.dart';
@@ -46,9 +49,16 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           : CupertinoColors.black,
       child: CustomScrollView(
         slivers: [
-          const CupertinoSliverNavigationBar(
-            largeTitle: Text(
+          CupertinoSliverNavigationBar(
+            largeTitle: const Text(
               'Let\'s explore',
+            ),
+            previousPageTitle: 'Home',
+            stretch: true,
+            trailing: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              child: const ProfileIcon(),
+              onPressed: () => context.pushNamed(AppRoute.profileView.name),
             ),
           ),
           SliverFillRemaining(
@@ -139,5 +149,23 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         ],
       ),
     );
+  }
+}
+
+class ProfileIcon extends StatelessWidget {
+  const ProfileIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!context.watch<AuthenticationBloc>().state.status.isAuthenticated) {
+      return const Icon(
+        CupertinoIcons.person_crop_circle_fill,
+        color: CupertinoColors.systemGrey,
+        size: 40,
+      );
+    } else {
+      return ClipOval(
+      child: Image.network('https://pbs.twimg.com/profile_images/1800536047031369728/EG33Eq8-_400x400.jpg'));
+    }
   }
 }

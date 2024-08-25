@@ -6,6 +6,7 @@ extension MyThemeColorsExtension on BuildContext {
 }
 
 class MyThemeColors {
+  final Color primaryColor;
   final Color secondaryColor;
   final Color smallButtonActiveColor;
   final Color smallButtonDisabledColor;
@@ -13,9 +14,14 @@ class MyThemeColors {
   final Color smallButtonDisabledTextColor;
   final Color favoriteButtonActiveColor;
   final Color favoriteButtonDisabledColor;
+  final Color textFieldBackgroundColor;
 
   factory MyThemeColors.fromContext(BuildContext context) {
     return MyThemeColors(
+        primaryColor: const CupertinoDynamicColor.withBrightness(
+          color: SpaceColors.darkBlue,
+          darkColor: SpaceColors.white,
+        ),
         secondaryColor: const CupertinoDynamicColor.withBrightness(
           color: SpaceColors.violet,
           darkColor: SpaceColors.indigo,
@@ -34,21 +40,25 @@ class MyThemeColors {
         ).resolveFrom(context),
         smallButtonDisabledTextColor:
             const CupertinoDynamicColor.withBrightness(
-              color: SpaceColors.white,
-              darkColor: SpaceColors.white,
+          color: SpaceColors.white,
+          darkColor: SpaceColors.white,
         ).resolveFrom(context),
         favoriteButtonActiveColor: const CupertinoDynamicColor.withBrightness(
           color: SpaceColors.white,
           darkColor: SpaceColors.white,
         ).resolveFrom(context),
-        favoriteButtonDisabledColor:
-            const CupertinoDynamicColor.withBrightness(
+        favoriteButtonDisabledColor: const CupertinoDynamicColor.withBrightness(
           color: SpaceColors.white,
           darkColor: SpaceColors.white,
+        ).resolveFrom(context),
+        textFieldBackgroundColor: const CupertinoDynamicColor.withBrightness(
+          color: SpaceColors.systemGrey6,
+          darkColor: SpaceColors.systemGrey6,
         ).resolveFrom(context));
   }
 
   MyThemeColors({
+    required this.primaryColor,
     required this.secondaryColor,
     required this.smallButtonActiveColor,
     required this.smallButtonActiveTextColor,
@@ -56,5 +66,6 @@ class MyThemeColors {
     required this.smallButtonDisabledTextColor,
     required this.favoriteButtonActiveColor,
     required this.favoriteButtonDisabledColor,
+    required this.textFieldBackgroundColor,
   });
 }

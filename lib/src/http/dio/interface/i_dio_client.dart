@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:fresh_dio/fresh_dio.dart';
 import 'package:space_app/src/http/dio/http_handler/default_http_handler.dart';
 import 'package:space_app/src/http/dio/model/response_entity.dart';
+import 'package:space_app/src/http/dio/token_storage/token_storage.dart';
 
 /// [IDioClient] is used to handle http rest api calls.
 abstract class IDioClient {
@@ -22,15 +24,32 @@ abstract class IDioClient {
           requestBody: true,
           responseBody: true,
         ),
-      );
+      )
+      ..interceptors.add(_fresh);
   }
 
   late final String baseUrl;
 
   final Dio _dio = Dio();
 
+  final _fresh = Fresh.oAuth2(
+    tokenHeader: (token) {
+      return {
+        'Authorization': 'Bearer ${token.accessToken}',
+      };
+    },
+    tokenStorage: TokenStorageImpl(),
+    shouldRefresh: (response) {
+      return response?.statusCode == 401 || response?.statusCode == 403;
+    },
+    refreshToken: (token, client) {
+      throw RevokeTokenException();
+    },
+  );
+
   /// http get call
-  Future<ResponseEntity<T>> get<T>(String url, {
+  Future<ResponseEntity<T>> get<T>(
+    String url, {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
@@ -48,7 +67,8 @@ abstract class IDioClient {
   }
 
   /// http post call
-  Future<ResponseEntity<T>> post<T>(String uri, {
+  Future<ResponseEntity<T>> post<T>(
+    String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -69,7 +89,8 @@ abstract class IDioClient {
   }
 
   /// http put call
-  Future<ResponseEntity<T>> put<T>(String uri, {
+  Future<ResponseEntity<T>> put<T>(
+    String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -90,7 +111,8 @@ abstract class IDioClient {
   }
 
   /// http delete call
-  Future<ResponseEntity<T>> delete<T>(String uri, {
+  Future<ResponseEntity<T>> delete<T>(
+    String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -109,7 +131,9 @@ abstract class IDioClient {
     }
   }
 
-  Future<ResponseEntity<T>> _handleResponse<T>(Response<T> response,) {
+  Future<ResponseEntity<T>> _handleResponse<T>(
+    Response<T> response,
+  ) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return Future.value(
         ResponseEntity<T>(
@@ -128,7 +152,9 @@ abstract class IDioClient {
     }
   }
 
-  Future<ResponseEntity<T>> _handleError<T>(dynamic e,) {
+  Future<ResponseEntity<T>> _handleError<T>(
+    dynamic e,
+  ) {
     final error = e as DioException;
     if (error.response != null) {
       return Future.value(
@@ -136,9 +162,9 @@ abstract class IDioClient {
           statusCode: error.response!.statusCode!,
           message: error.response!.statusMessage,
           data:
-          error.response!.statusCode == 200 && error.response?.data != null
-              ? error.response?.data as T
-              : null,
+              error.response!.statusCode == 200 && error.response?.data != null
+                  ? error.response?.data as T
+                  : null,
         ),
       );
     } else {
@@ -159,5 +185,15 @@ abstract class IDioClient {
         );
       }
     }
+  }
+
+  /// Listener for authorization status changes
+  Stream<AuthenticationStatus> get authenticationStatus =>
+      _fresh.authenticationStatus;
+
+  Future<void> setToken(OAuth2Token token) => _fresh.setToken(token);
+
+  Future<void> logout() {
+    return _fresh.clearToken();
   }
 }

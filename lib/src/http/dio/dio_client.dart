@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:space_app/src/http/const/http_const.dart';
-import 'package:space_app/src/http/dio/http_handler/default_http_handler.dart';
 import 'package:space_app/src/http/dio/interface/i_dio_client.dart';
 
 class DioClient extends IDioClient {
@@ -15,6 +14,7 @@ class DioClient extends IDioClient {
   DioClient._internal({this.interceptor})
       : super(
     url: HttpConst.baseUrl,
-    interceptor: interceptor ?? DefaultHttpHeaderInterceptor(),
+    interceptor: interceptor,
   );
+
 }

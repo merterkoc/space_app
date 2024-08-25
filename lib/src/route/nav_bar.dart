@@ -1,5 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:space_app/main.dart';
+import 'package:space_app/src/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -57,6 +59,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
   }
 
   void _onTap(BuildContext context, int index) {
+    if (index == 3 &&
+        !context.read<AuthenticationBloc>().state.status.isAuthenticated) {
+      goRouter.pushNamed(AppRoute.loginView.name);
+      return;
+    }
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
