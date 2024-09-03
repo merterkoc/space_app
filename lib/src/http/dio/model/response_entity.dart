@@ -1,20 +1,49 @@
-class ResponseEntity<T> {
-  ResponseEntity({required this.statusCode, this.message, this.data});
+import 'package:space_app/src/service/model/enum/request_status.dart';
 
-  ResponseEntity.fromJson(
-    Map<String, dynamic> json,
-    this.statusCode,
-    this.message,
-    this.data,
-  ) {
-    statusCode = json['code'] as int;
-    message = json['message'] != null ? json['message'] as String : null;
-    data = json['data'] != null ? json['data'] as T : null;
+class ResponseEntity<T> {
+  ResponseEntity(
+      {required this.statusCode,
+      this.message,
+      this.data,
+      this.status = RequestStatus.initial});
+
+  factory ResponseEntity.initial({T? data, int statusCode = 200}) {
+    return ResponseEntity(
+      statusCode: statusCode,
+      data: data,
+      status: RequestStatus.initial,
+    );
+  }
+
+  factory ResponseEntity.loading({T? data, int statusCode = 200}) {
+    return ResponseEntity(
+      statusCode: statusCode,
+      data: data,
+      status: RequestStatus.loading,
+    );
+  }
+
+  factory ResponseEntity.success({T? data, int statusCode = 200}) {
+    return ResponseEntity(
+      statusCode: statusCode,
+      data: data,
+      status: RequestStatus.success,
+    );
+  }
+
+  factory ResponseEntity.error({String? message, int statusCode = 400, data}) {
+    return ResponseEntity(
+      statusCode: statusCode,
+      message: message,
+      status: RequestStatus.error,
+      data: data,
+    );
   }
 
   late final int statusCode;
   late final String? message;
   late final T? data;
+  late final RequestStatus status;
 
   static Map<String, dynamic> toJson(ResponseEntity<dynamic> response) {
     final data = <String, dynamic>{};

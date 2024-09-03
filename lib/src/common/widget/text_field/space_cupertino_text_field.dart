@@ -1,10 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:space_app/app.dart';
 import 'package:space_app/src/ui/space_ui.dart';
+import 'package:space_app/src/util/extensions/theme_extension.dart';
 
 class SpaceCupertinoTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? placeholder;
   final EdgeInsets? padding;
   final IconData? icon;
+  final TextInputType? keyboardType;
+  final bool obscureText;
 
   const SpaceCupertinoTextField({
     super.key,
@@ -12,12 +17,26 @@ class SpaceCupertinoTextField extends StatelessWidget {
     this.placeholder,
     this.padding,
     this.icon,
+    this.keyboardType,
+    this.obscureText = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return CupertinoTextField(
+      keyboardType: keyboardType,
+      autofocus: true,
+      obscureText: obscureText,
       clearButtonMode: OverlayVisibilityMode.editing,
+      suffix: !obscureText
+          ? null
+          : IconButton(
+              onPressed: () {
+                //controller.obscureText = !controller.obscureText;
+              },
+              icon: Icon(CupertinoIcons.eye_slash,
+                  color: context.myThemeColors.smallButtonDisabledColor),
+            ),
       prefix: icon != null
           ? Padding(
               padding: const EdgeInsets.only(left: 16),

@@ -29,10 +29,14 @@ class StatusChanged extends AuthenticationEvent {
 class SignUpRequested extends AuthenticationEvent {
   final String email;
   final String password;
+  final String confirmPassword;
   final String name;
 
   const SignUpRequested(
-      {required this.email, required this.password, required this.name});
+      {required this.email,
+      required this.password,
+      required this.confirmPassword,
+      required this.name});
 }
 
 class SignInRequested extends AuthenticationEvent {

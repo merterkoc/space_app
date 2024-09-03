@@ -136,15 +136,14 @@ abstract class IDioClient {
   ) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return Future.value(
-        ResponseEntity<T>(
+        ResponseEntity<T>.success(
           statusCode: response.statusCode!,
           data: response.data as T,
         ),
       );
     } else {
       return Future.value(
-        ResponseEntity(
-          data: response.data as T,
+        ResponseEntity.error(
           message: response.statusMessage,
           statusCode: response.statusCode!,
         ),
@@ -158,9 +157,9 @@ abstract class IDioClient {
     final error = e as DioException;
     if (error.response != null) {
       return Future.value(
-        ResponseEntity<T>(
+        ResponseEntity<T>.error(
           statusCode: error.response!.statusCode!,
-          message: error.response!.statusMessage,
+          message: (error.response?.data['message'] as String),
           data:
               error.response!.statusCode == 200 && error.response?.data != null
                   ? error.response?.data as T
@@ -171,14 +170,14 @@ abstract class IDioClient {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout) {
         return Future.value(
-          ResponseEntity<T>(
+          ResponseEntity<T>.error(
             statusCode: 408,
             message: 'Connection timeout',
           ),
         );
       } else {
         return Future.value(
-          ResponseEntity<T>(
+          ResponseEntity<T>.error(
             statusCode: 601,
             message: 'Unknown error',
           ),

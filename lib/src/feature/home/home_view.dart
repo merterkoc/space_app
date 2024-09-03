@@ -12,6 +12,7 @@ import 'package:space_app/src/ui/component/button/small_button.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 import 'package:space_app/src/ui/widgets/small_button_list.dart';
 import 'package:space_app/src/util/date_util/date_time.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -153,19 +154,30 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 }
 
 class ProfileIcon extends StatelessWidget {
-  const ProfileIcon({super.key});
+  final double width;
+
+  const ProfileIcon({super.key, this.width = 40});
 
   @override
   Widget build(BuildContext context) {
-    if (!context.watch<AuthenticationBloc>().state.status.isAuthenticated) {
-      return const Icon(
-        CupertinoIcons.person_crop_circle_fill,
-        color: CupertinoColors.systemGrey,
-        size: 40,
-      );
-    } else {
-      return ClipOval(
-      child: Image.network('https://pbs.twimg.com/profile_images/1800536047031369728/EG33Eq8-_400x400.jpg'));
-    }
+    return BlocBuilder<UserBloc, UserState>(
+      buildWhen: (previous, current) =>
+          previous.userInfo?.avatar != current.userInfo?.avatar,
+      builder: (context, state) {
+        if (state.userInfo == null) {
+          return Icon(
+            CupertinoIcons.person_crop_circle_fill,
+            color: CupertinoColors.systemGrey,
+            size: width,
+          );
+        }
+        return SvgPicture.network(
+          width: width,
+          context.watch<UserBloc>().state.userInfo?.avatar ?? '',
+          placeholderBuilder: (BuildContext context) =>
+              const CircularProgressIndicator.adaptive(),
+        );
+      },
+    );
   }
 }

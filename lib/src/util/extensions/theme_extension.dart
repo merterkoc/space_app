@@ -23,8 +23,8 @@ class MyThemeColors {
           darkColor: SpaceColors.white,
         ),
         secondaryColor: const CupertinoDynamicColor.withBrightness(
-          color: SpaceColors.violet,
-          darkColor: SpaceColors.indigo,
+          color: SpaceColors.white,
+          darkColor: SpaceColors.darkBlue,
         ).resolveFrom(context),
         smallButtonActiveColor: const CupertinoDynamicColor.withBrightness(
           color: SpaceColors.white,

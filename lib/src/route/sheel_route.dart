@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:space_app/src/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:space_app/src/bloc/user_bloc/user_bloc.dart';
 import 'package:space_app/src/handlers/location_handler.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
@@ -15,7 +18,37 @@ class _ShellViewState extends State<ShellView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return widget.child;
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthenticationBloc, AuthenticationState>(
+          listenWhen: (previous, current) =>
+              (previous.status != current.status) && !previous.status.isUnknown,
+          listener: (context, state) {
+            if (state.status.isAuthenticated) {
+              goRouter.goNamed(AppRoute.profileView.name);
+            } else if (state.status.isUnauthenticated) {
+              goRouter.goNamed(AppRoute.homeView.name);
+              context.read<UserBloc>().add(const ClearUserEvent());
+            }
+          },
+        ),
+        BlocListener<AuthenticationBloc, AuthenticationState>(
+          listenWhen: (previous, current) =>
+              previous.status.isAuthenticated != current.status.isAuthenticated,
+          listener: (context, state) {
+            if (state.status.isAuthenticated) {
+              context.read<UserBloc>().add(const GetUserEvent());
+            } else if (state.status.isUnauthenticated) {
+              context.read<UserBloc>().add(const ClearUserEvent());
+            }
+          },
+        ),
+      ],
+      child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: widget.child),
+    );
   }
 
   @override

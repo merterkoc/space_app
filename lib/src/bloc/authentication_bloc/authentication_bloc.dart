@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:space_app/src/service/model/user_dto.dart';
+import 'package:space_app/src/http/dio/model/response_entity.dart';
+import 'package:space_app/src/service/model/login_dto.dart';
 import 'package:space_app/src/service/repository/authentication_repository.dart';
 
 part 'authentication_event.dart';
@@ -32,10 +34,15 @@ class AuthenticationBloc
 
   Future<void> _onSignUpRequested(
       SignUpRequested event, Emitter<AuthenticationState> emit) async {
+    emit(state.copyWith(registerResponse: ResponseEntity.loading()));
     final response = await _repository.signUp(
       email: event.email,
       password: event.password,
+      confirmPassword: event.confirmPassword,
       name: event.name,
+    );
+    emit(
+      state.copyWith(registerResponse: response),
     );
     if (response.statusCode == 200) {
       emit(const AuthenticationState(
@@ -46,11 +53,26 @@ class AuthenticationBloc
     }
   }
 
-  _onSignInRequested(SignInRequested event, Emitter<AuthenticationState> emit) {
-    _repository.signIn(
-      email: event.email,
-      password: event.password,
-    );
+  _onSignInRequested(
+      SignInRequested event, Emitter<AuthenticationState> emit) async {
+    try {
+      emit(state.copyWith(loginResponse: ResponseEntity.loading()));
+      final responseEntity = await _repository.signIn(
+        email: event.email,
+        password: event.password,
+      );
+      emit(
+        state.copyWith(loginResponse: responseEntity),
+      );
+    } on Error {
+      emit(
+        state.copyWith(
+          loginResponse: ResponseEntity.error(
+            message: '',
+          ),
+        ),
+      );
+    }
   }
 
   _onLogoutRequested(Emitter<AuthenticationState> emit) {
