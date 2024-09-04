@@ -36,8 +36,11 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const ProfileIcon(
-                      width: 200,
+                    Hero(
+                      tag: 'profile',
+                      child: const ProfileIcon(
+                        width: 200,
+                      ),
                     ),
                     const SizedBox(
                       height: 20,

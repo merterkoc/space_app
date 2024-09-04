@@ -25,8 +25,7 @@ class AstronomicEventBloc
   }
 
   final AstronomicEventRepository _astronomicEventRepository =
-      AstronomicEventRepository(
-          coordinate: LocationHandler().position!.coordinate);
+      AstronomicEventRepository();
 
   Future<void> _onFetchAstronomicEvent(
       FetchAstronomicEvent event, Emitter<AstronomicEventState> emit) async {
@@ -76,7 +75,7 @@ class AstronomicEventBloc
   Future<void> _onFetchAstronomicEventByCategory(
       FetchAstronomicEventByCategory event,
       Emitter<AstronomicEventState> emit) async {
-    if(event.category == null) return;
+    if (event.category == null) return;
     emit(state.copyWith(eventListByCategoryRequestState: RequestState.loading));
     final response =
         await _astronomicEventRepository.fetchAstronomicEventsByCategory(

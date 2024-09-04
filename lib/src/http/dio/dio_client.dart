@@ -7,14 +7,15 @@ class DioClient extends IDioClient {
   final Interceptor? interceptor;
 
   factory DioClient({Interceptor? interceptor}) {
-    _instance ??= DioClient._internal(interceptor: interceptor);
+    if (interceptor != _instance?.interceptor) {
+      _instance = DioClient._internal(interceptor: interceptor);
+    }
     return _instance!;
   }
 
   DioClient._internal({this.interceptor})
       : super(
-    url: HttpConst.baseUrl,
-    interceptor: interceptor,
-  );
-
+          url: HttpConst.baseUrl,
+          interceptor: interceptor,
+        );
 }

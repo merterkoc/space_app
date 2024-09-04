@@ -10,6 +10,7 @@ class SpaceCupertinoTextField extends StatelessWidget {
   final IconData? icon;
   final TextInputType? keyboardType;
   final bool obscureText;
+  final bool autofocus;
 
   const SpaceCupertinoTextField({
     super.key,
@@ -19,13 +20,14 @@ class SpaceCupertinoTextField extends StatelessWidget {
     this.icon,
     this.keyboardType,
     this.obscureText = false,
+    this.autofocus = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return CupertinoTextField(
       keyboardType: keyboardType,
-      autofocus: true,
+      autofocus: autofocus,
       obscureText: obscureText,
       clearButtonMode: OverlayVisibilityMode.editing,
       suffix: !obscureText

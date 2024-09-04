@@ -4,7 +4,7 @@ import 'package:space_app/src/service/repository/astronomic_event_repository.dar
 void main() {
   late final AstronomicEventRepository repository;
   setUp(() {
-    repository = AstronomicEventRepository(coordinate: '0.0,0.0');
+    repository = AstronomicEventRepository();
   });
   test('Test get', () async {
     final events = await repository.fetchAstronomicEvents(page: 6, size: 1);

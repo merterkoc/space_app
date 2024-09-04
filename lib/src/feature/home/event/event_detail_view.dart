@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:space_app/src/bloc/astronomic_event_bloc.dart';
+import 'package:space_app/src/common/widget/button/category_tag.dart';
 import 'package:space_app/src/service/model/astronomic_event_dto.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
@@ -9,7 +11,8 @@ class EventDetailView extends StatefulWidget {
 
   const EventDetailView({
     super.key,
-    required this.id, required this.imageHeroTag,
+    required this.id,
+    required this.imageHeroTag,
   });
 
   @override
@@ -41,28 +44,52 @@ class _EventDetailViewState extends State<EventDetailView> {
             child: SafeArea(
               child: Column(
                 children: [
-
                   Flexible(
                     child: Container(
                       padding: PaddingConst.mediumPadding,
                       child: Hero(
-                        tag: widget.imageHeroTag,
-                        child: Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(16)),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: Image.network(
-                                event?.image?.first ??
-                                    'https://cdn.pixabay.com/photo/2019/04/06/06/44/astronaut-4106766_1280.jpg',
+                          tag: widget.imageHeroTag,
+                          child: Container(
+                            height: 200,
+                            padding: const EdgeInsets.all(8),
+                            alignment: Alignment.bottomRight,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              image: DecorationImage(
                                 fit: BoxFit.cover,
-                              ).image,
+                                image: Image.network(
+                                  event?.image?.first ??
+                                      'https://cdn.pixabay.com/photo/2019/04/06/06/44/astronaut-4106766_1280.jpg',
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CupertinoActivityIndicator(),
+                                    );
+                                  },
+                                  errorBuilder:
+                                      (context, exception, stackTrack) =>
+                                          const Icon(
+                                    Icons.error,
+                                  ),
+                                ).image,
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                            child: event?.categories?.isNotEmpty == true
+                                ? Wrap(
+                                  spacing: 4,
+                                  runSpacing: 4,
+                                  children: [
+                                    for (final String category
+                                        in event!.categories!)
+                                      CategoryTag(category: category),
+                                  ],
+                                )
+                                : null,
+                          )),
                     ),
                   ),
                   Padding(

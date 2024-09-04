@@ -2,15 +2,10 @@ import 'package:space_app/src/http/dio/model/response_entity.dart';
 import 'package:space_app/src/service/api_provider/astronomic_event_api_provider.dart';
 
 class AstronomicEventRepository {
-  final String coordinate;
+  AstronomicEventRepository();
 
-  AstronomicEventRepository({required this.coordinate}) {
-    assert(coordinate.isNotEmpty);
-  }
-
-  late final AstronomicEventApiProvider _provider = AstronomicEventApiProvider(
-    coordinate: coordinate,
-  );
+  late final AstronomicEventApiProvider _provider =
+      AstronomicEventApiProvider();
 
   Future<ResponseEntity> fetchAstronomicEvents(
       {required int page, required int size}) async {

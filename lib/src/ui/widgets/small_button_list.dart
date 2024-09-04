@@ -1,7 +1,7 @@
 import 'package:space_app/src/ui/component/button/small_button.dart';
 import 'package:space_app/src/ui/space_ui.dart';
 
-final ScrollController scrollController = ScrollController();
+final ScrollController scrollController = ScrollController(initialScrollOffset: 0);
 
 class SmallButtonItemList extends StatelessWidget {
   const SmallButtonItemList({super.key, required this.smallButtonItems});
@@ -13,8 +13,6 @@ class SmallButtonItemList extends StatelessWidget {
     var firstWhere = smallButtonItems.firstWhere((element) => element.isActive);
     smallButtonItems.remove(firstWhere);
     smallButtonItems.insert(0, firstWhere);
-    scrollController.animateTo(0,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     return Column(
       children: [
         SizedBox(

@@ -10,6 +10,7 @@ class AstronomicEventDTO extends Equatable {
   final String? endDate;
   final ISSPositionEntity? coordinate;
   final List<String>? image;
+  final List<String>? categories;
 
   const AstronomicEventDTO(
       {this.id,
@@ -19,7 +20,8 @@ class AstronomicEventDTO extends Equatable {
       this.startDate,
       this.endDate,
       this.coordinate,
-      this.image});
+      this.image,
+      this.categories});
 
   factory AstronomicEventDTO.fromJson(Map<String, dynamic> json) =>
       AstronomicEventDTO(
@@ -37,6 +39,9 @@ class AstronomicEventDTO extends Equatable {
                 json['coordinate'] as Map<String, dynamic>),
         image:
             (json['image'] as List<dynamic>?)?.map((e) => e as String).toList(),
+        categories: (json['categories'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
       );
 
   Map<String, dynamic> toJson() {
@@ -53,6 +58,7 @@ class AstronomicEventDTO extends Equatable {
       data['coordinate'] = coordinate!.toJson();
     }
     data['image'] = image;
+    data['categories'] = categories;
     return data;
   }
 
@@ -66,5 +72,6 @@ class AstronomicEventDTO extends Equatable {
         endDate,
         coordinate,
         image,
+        categories,
       ];
 }

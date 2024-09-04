@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:space_app/main.dart';
@@ -21,6 +22,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
             child: navigationShell,
           ),
           CupertinoTabBar(
+            backgroundColor: Colors.transparent,
             onTap: (index) => _onTap(context, index),
             currentIndex: navigationShell.currentIndex,
             activeColor: settingsController.themeMode == Brightness.dark

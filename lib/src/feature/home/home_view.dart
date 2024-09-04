@@ -56,9 +56,12 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
             ),
             previousPageTitle: 'Home',
             stretch: true,
+            transitionBetweenRoutes: false,
             trailing: CupertinoButton(
               padding: const EdgeInsets.all(0),
-              child: const ProfileIcon(),
+              child: Hero(
+                  tag: 'profile',
+                  child: const ProfileIcon()),
               onPressed: () => context.pushNamed(AppRoute.profileView.name),
             ),
           ),
